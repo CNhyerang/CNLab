@@ -178,70 +178,7 @@ int getmax() {
 		return max;
 }
 
-// listen 소켓 생성 및 listen
-int  tcp_listen(int host, int port, int backlog) {
-	int sd;
-	int opt_yes=1; 		// 소켓의 옵션값
-	struct sockaddr_in servaddr;
 
-	sd = socket(AF_INET, SOCK_STREAM, 0);
-	
-	if(sd == -1) {
-		perror("socket fail");
-		exit(1);
-	}
-	// 소켓의 옵션 변경 TIME-WAIT 시에도 재실행 가능
-	if (setsockopt(sd, SOL_SOCKET,SO_REUSEADDR,&opt_yes,sizeof(opt_yes))<0)
-		printf("error : reuse setsockopt\n");
-
-	//SO_KEEPALIVE 지정 .상대방과 연결상태 점검
-	if (setsockopt(sd, SOL_SOCKET,SO_KEEPALIVE,&opt_yes,sizeof(opt_yes))<0)
-		printf("error ; keepalive \n");
-
-    // servaddr 구조체의 내용 세팅
-	bzero((char *)&servaddr, sizeof(servaddr));
-	servaddr.sin_family = AF_INET;
-	servaddr.sin_addr.s_addr = htonl(host);
-	servaddr.sin_port = htons(port);
-	
-	if (bind(sd , (struct sockaddr *)&servaddr, sizeof(servaddr)) < 0) {
-		perror("bind fail");  exit(1);
-	}
-    // 클라이언트로부터 연결요청을 기다림
-	listen(sd, backlog);
-	return sd;
-}
-void get_time(){
-	time_t get_time;
-	struct tm *cur_time;
-	
-	time(&get_time);
-	//cur_time=gmtime(&get_time);
-	cur_time=localtime(&get_time);
-	fprintf(chat_log,"%4d/%2d/%2d %2d:%2d:%2d \t",cur_time->tm_year+1900,cur_time->tm_mon+1,cur_time->tm_mday,
-		cur_time->tm_hour,cur_time->tm_min,cur_time->tm_sec);
-	fflush(chat_log);	
-}
-
-void creat_room(int sock){     //채팅방을 개설해 주는 함수
-//	chat_rooms[rooms_num].user_cnt=0;	
-	printf("creat room %d %d\n",sock,chat_rooms[rooms_num].user_cnt);
-	while(1){
-//		if((send(sock,CREAT_ROOM,sizeof(CREAT_ROOM),0))<0)
-//			printf("failed\n");
-		printf("succes send\n");
-		if((recv(sock, chat_rooms[rooms_num].room_name, MAXLINE,0))<0)
-			printf("failed recv\n");
-		printf("succes recv\n");
-		break;
-	}
-	chat_rooms[rooms_num].user_list[chat_rooms[rooms_num].user_cnt]=sock;
-	printf("%s",chat_rooms[rooms_num].room_name);
-	chat_rooms[rooms_num].user_cnt++;
-	rooms_num++;
-	printf("%d \n ",rooms_num);
-	
-}
 
 void out_room_list(int sock){ //채팅방 목록을 보여주는 함수 
 	int j;
