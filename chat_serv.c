@@ -11,49 +11,7 @@
 #include <time.h>
 #include <signal.h>
 
-#define MAXLINE  511
-#define MAX_SOCK 1024 // 솔라리스의 경우 64
-
-char *EXIT_STRING = "exit";  
-char *START_STRING = "▩▩▩▩▩ ▩▩▩▩▩ ▩▩▩▩▩ ▩▩▩▩▩ ▩▩▩▩▩\n▩▩▩▩▩ Welcome to Linux Chatting World! ▩▩▩▩▩\n▩▩▩▩▩ ver 1.0           ▩▩▩▩▩\n▩▩▩▩▩ ▩▩▩▩▩ ▩▩▩▩▩ ▩▩▩▩▩ ▩▩▩▩▩\n";		
-char *MAIN_MENU="\t서비스 번호를 선택하세요.\n 1.채팅방 개설 \n 2.채팅 참여\n 3.회원 보기\n\n\n<번호/명령(go,exit)> "; 
-char *CREAT_ROOM="enter chatting room subject ";
-    
-int maxfdp1;                // 최대 소켓번호 +1
-int num_chat = 0;          // 채팅 참가자 수
-int clisock_list[MAX_SOCK]; // 채팅에 참가자 소켓번호 목록
-int listen_sock,addrlen = sizeof(struct sockaddr_in);
-int serv_port=2402;
-int rooms_num=0;
-
-FILE *chat_log;
-
-struct chat_room{
-	 		// room structure
-        char room_name[MAXLINE];
-        int user_cnt;	 // entry num
-        int user_list[MAX_SOCK]; // entry name list
-};
-
-struct chat_room chat_rooms[MAXLINE];
-
-// 새로운 채팅 참가자 처리
-void addClient(int s, struct sockaddr_in *newcliaddr);
-
-int getmax();               // 최대 소켓 번호 찾기
-
-void removeClient(int s);    // 채팅 탈퇴 처리 함수
-
-int tcp_listen(int host, int port, int backlog); // 소켓 생성 및 listen
-
-void errquit(char *mesg) { perror(mesg); exit(1); }
-
-void get_time(void);
-
-void creat_room(int sock);
-
-void out_room_list(int sock);
-
+#define M
 void sig_pipe(void){	//안정적인 동작위해 SIPPIPE 무시
 	struct sigaction spipe_act;
 	spipe_act.sa_handler = SIG_IGN;
