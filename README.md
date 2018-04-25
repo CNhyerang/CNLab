@@ -1,3 +1,0 @@
-# CNLabProject
-
-LINUX NS3 802 MAC CC/ H
