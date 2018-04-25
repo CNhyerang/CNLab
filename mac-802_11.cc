@@ -1,8 +1,6 @@
 /* -*-	Mode:C++; c-basic-offset:8; tab-width:8; indent-tabs-mode:t -*-
  *
- * Copyright (c) 1997 Regents of the University of California.
- * All rights reserved.
- *
+ *The algorithm used by the network simulator-2(Linux)
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
  * are met:
@@ -80,7 +78,7 @@ int beb = 0;
 int eied = 0; 
 int lild = 0; 
 int sab = 0;
-int sabeb = 1;
+int sabeb = 1; //tcb algorithm
 
 int burstStartTime = 30;	// sEC
 int burstEndTime = 80;	// sEC
